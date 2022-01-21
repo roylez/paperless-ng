@@ -161,13 +161,13 @@ Install Paperless from Docker Hub
 
     .. code::
 
-        - ./consume:/usr/src/paperless/consume
+        - ./consume:/app/consume
 
     Replace the part BEFORE the colon with a local directory of your choice:
 
     .. code::
 
-        - /home/jonaswinkler/paperless-inbox:/usr/src/paperless/consume
+        - /home/jonaswinkler/paperless-inbox:/app/consume
 
     Don't change the part after the colon or paperless wont find your documents.
 

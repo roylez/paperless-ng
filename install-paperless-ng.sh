@@ -301,14 +301,14 @@ DEFAULT_LANGUAGES="deu eng fra ita spa"
 
 sed -i "s/- 8000:8000/- $PORT:8000/g" docker-compose.yml
 
-sed -i "s#- \./consume:/usr/src/paperless/consume#- $CONSUME_FOLDER:/usr/src/paperless/consume#g" docker-compose.yml
+sed -i "s#- \./consume:/app/consume#- $CONSUME_FOLDER:/app/consume#g" docker-compose.yml
 
 if [[ -n $MEDIA_FOLDER ]] ; then
-	sed -i "s#- media:/usr/src/paperless/media#- $MEDIA_FOLDER:/usr/src/paperless/media#g" docker-compose.yml
+	sed -i "s#- media:/app/media#- $MEDIA_FOLDER:/app/media#g" docker-compose.yml
 fi
 
 if [[ -n $DATA_FOLDER ]] ; then
-	sed -i "s#- data:/usr/src/paperless/data#- $DATA_FOLDER:/usr/src/paperless/data#g" docker-compose.yml
+	sed -i "s#- data:/app/data#- $DATA_FOLDER:/app/data#g" docker-compose.yml
 fi
 
 docker-compose pull

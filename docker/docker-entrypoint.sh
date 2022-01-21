@@ -34,7 +34,7 @@ initialize() {
 	find .. -not \( -user paperless -and -group paperless \) -exec chown paperless:paperless {} +
 	set -e
 
-	gosu paperless /sbin/docker-prepare.sh
+	sudo -u paperless /sbin/docker-prepare.sh
 }
 
 install_languages() {
@@ -47,27 +47,23 @@ install_languages() {
 	if [ ${#langs[@]} -eq 0 ]; then
 		return
 	fi
-	apt-get update
+	apk update
 
 	for lang in "${langs[@]}"; do
-		pkg="tesseract-ocr-$lang"
-		# English is installed by default
-		#if [[ "$lang" ==  "eng" ]]; then
-		#    continue
-		#fi
+		pkg="tesseract-ocr-data-$lang"
 
-		if dpkg -s $pkg &>/dev/null; then
+		if apk list -I $pkg &>/dev/null; then
 			echo "Package $pkg already installed!"
 			continue
 		fi
 
-		if ! apt-cache show $pkg &>/dev/null; then
+		if ! apk list -a $pkg &>/dev/null; then
 			echo "Package $pkg not found! :("
 			continue
 		fi
 
 		echo "Installing package $pkg..."
-		if ! apt-get -y install "$pkg" &>/dev/null; then
+		if ! apk add --no-cache "$pkg" &>/dev/null; then
 			echo "Could not install $pkg"
 			exit 1
 		fi
@@ -85,7 +81,7 @@ initialize
 
 if [[ "$1" != "/"* ]]; then
 	echo Executing management command "$@"
-	exec gosu paperless python3 manage.py "$@"
+	exec sudo -u paperless python3 manage.py "$@"
 else
 	echo Executing "$@"
 	exec "$@"

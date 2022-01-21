@@ -36,12 +36,12 @@ migrations() {
 		flock 200
 		echo "Apply database migrations..."
 		python3 manage.py migrate
-	) 200>/usr/src/paperless/data/migration_lock
+	) 200>/app/data/migration_lock
 }
 
 search_index() {
 	index_version=1
-	index_version_file=/usr/src/paperless/data/.index_version
+	index_version_file=/app/data/.index_version
 
 	if [[ (! -f "$index_version_file") || $(<$index_version_file) != "$index_version" ]]; then
 		echo "Search index out of date. Updating..."

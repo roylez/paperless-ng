@@ -125,7 +125,7 @@ You might encounter errors such as:
 
 .. code:: shell-session
 
-    The following error occured while consuming document.pdf: [Errno 13] Permission denied: '/usr/src/paperless/src/../consume/document.pdf'
+    The following error occured while consuming document.pdf: [Errno 13] Permission denied: '/app/src/../consume/document.pdf'
 
 This happens when paperless does not have permission to delete files inside the consumption directory.
 Ensure that ``USERMAP_UID`` and ``USERMAP_GID`` are set to the user id and group id you use on the host operating system, if these are
@@ -152,9 +152,9 @@ If you experience errors such as:
     Traceback (most recent call last):
     File "/usr/local/lib/python3.7/site-packages/django_q/cluster.py", line 436, in worker
     res = f(*task["args"], **task["kwargs"])
-    File "/usr/src/paperless/src/documents/tasks.py", line 73, in consume_file
+    File "/app/src/documents/tasks.py", line 73, in consume_file
     override_tag_ids=override_tag_ids)
-    File "/usr/src/paperless/src/documents/consumer.py", line 271, in try_consume_file
+    File "/app/src/documents/consumer.py", line 271, in try_consume_file
     raise ConsumerError(e)
 
 Paperless uses a search index to provide better and faster full text searching. This search index is stored inside

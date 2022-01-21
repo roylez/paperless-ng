@@ -2,11 +2,11 @@
 
 set -e
 
-cd /usr/src/paperless/src/
+cd /app/src/
 
 if [[ $(id -u) == 0 ]] ;
 then
-  gosu paperless python3 manage.py management_command "$@"
+  sudo -u paperless python3 manage.py management_command "$@"
 elif [[ $(id -un) == "paperless" ]] ;
 then
   python3 manage.py management_command "$@"
