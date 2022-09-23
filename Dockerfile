@@ -48,7 +48,8 @@ RUN apk add --update --no-cache \
     # Mime type detection
     file shared-mime-info libmagic \
     # OCRmyPDF dependencies
-    leptonica qpdf tesseract-ocr
+    leptonica qpdf tesseract-ocr \
+    redis
 
 # copy deps
 COPY --from=builder /install/bin /usr/local/bin
