@@ -68,6 +68,7 @@ COPY docker/ ./src/docker/
 RUN cd src/docker \
     && cp imagemagick-policy.xml /etc/ImageMagick-7/policy.xml \
     && mkdir /var/log/supervisord /var/run/supervisord \
+    && mkdir -p /config /data/media /data/consume \
     && cp supervisord.conf /etc/supervisord.conf \
     && cp docker-entrypoint.sh /sbin/docker-entrypoint.sh \
     && cp docker-prepare.sh /sbin/docker-prepare.sh \
@@ -78,7 +79,7 @@ RUN cd src/docker \
     && rm docker -rf \
     && addgroup -g 1000 -S paperless \
     && adduser -u 1000 -S -G paperless -h /app paperless \
-    && chown -R paperless:paperless /app
+    && chown -R paperless:paperless /app /config /data
 
 WORKDIR /app/src
 
@@ -86,10 +87,14 @@ WORKDIR /app/src
 COPY --chown=paperless:paperless src/ ./
 COPY --chown=paperless:paperless gunicorn.conf.py ../
 
+ENV PAPERLESS_DATA_DIR=/config \
+    PAPERLESS_MEDIA_ROOT=/data/media \
+    PAPERLESS_CONSUMPTION_DIR=/data/consume
+
 RUN sudo -u paperless python3 manage.py collectstatic --clear --no-input && \
     sudo -u paperless python3 manage.py compilemessages
 
-VOLUME ["/app/data", "/app/media", "/app/consume", "/app/export"]
+VOLUME ["/config", "/data"]
 ENTRYPOINT ["/sbin/docker-entrypoint.sh"]
 EXPOSE 8000
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
